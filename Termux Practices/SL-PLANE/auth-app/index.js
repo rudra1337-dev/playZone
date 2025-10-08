@@ -1,0 +1,217 @@
+const express = require(`express`);
+const mongoose = require(`mongoose`);
+const MongoDB = require(`./db.js`);
+const User = require(`./model/user.js`);
+const bcrypt = require(`bcryptjs`);
+const jwt = require(`jsonwebtoken`);
+const {body, validationResult} = require(`express-validator`);
+
+
+
+
+const app = express();
+app.use(express.json());
+MongoDB();
+
+app.use((req,res,next)=>{
+	console.log(`Passed from middleware`);
+	next();
+});
+
+const regiValidate = [
+	body("myName").notEmpty().withMessage("Name must needed"),
+	body("myName").isLength({min: 3}).withMessage("Name must be must be 3 digits"),
+//////	body("myPassword").isStrongPassword().withMessage("Make strong Password"),
+	body("myPassword").isLength({min: 3}).withMessage("Password is shorted should be 3 charaters"),
+	body("myEmail").isEmail().withMessage("Not a valid email"),
+	body("myEmail").isLength({max:50}).withMessage("Email maximum 50 characters"),
+	body("myRole").isIn(["user","admin"]).withMessage("Role only can 'user' or 'admin'")
+];
+
+
+
+
+
+const loginValidate = [
+      //  body("myPassword").isStrongPassword().withMessage("Make strong Password"),
+        body("myPassword").isLength({min: 3}).withMessage("Password is shorted should be 3 charaters"),
+        body("myEmail").isEmail().withMessage("Not a valid email"),
+        body("myEmail").isLength({max:50}).withMessage("Email maximum 50 characters")
+];
+
+
+
+
+
+app.post(`/user/register`,regiValidate , async (req,res)=>{
+
+	const error = valodationResult(req);
+	if(!error.isEmpty()){
+		res.status(404).json({Error: error.array()});
+	}
+
+
+	let {myName,myEmail,myPassword,myRole} = req.body;
+
+
+	if(! await User.findOne({email: myEmail}) ){
+
+		try{
+
+      	           myPassword = await bcrypt.hash(myPassword,10);
+
+      	           const savedUser = await User.create({
+              	                                   name: myName,
+                      	                           email: myEmail,
+                              	                   password: myPassword,
+						role: myRole
+                                      	           });
+	                 if(!savedUser){
+      	                   res.status(404).json({Error: `Wrong details`});
+              	   }
+
+      	           res.json({Message: "Registation successful", User: savedUser});
+        	 }catch(err){
+              	   res.status(err.status || 404).json({Error: err.message});
+         	}
+	}else{
+		res.status(404).json({Error : `User alerady exist try another email`});
+	}
+
+});
+
+
+
+
+
+//LOGIN ROUT NOT PROTECTED
+
+app.post(`/user/login`, loginValidate, async (req,res)=>{
+
+
+	const error = validationResult(req);
+	if(!error.isEmpty()){
+		res.status(404).json({Errors: error.array()});
+	}
+
+
+	const {myEmail,myPassword} = req.body;
+	const user = await User.findOne({email: myEmail});
+   if(!user){
+	return res.status(403).json({Errr: "User not found"});
+   }
+
+	if((user.email == myEmail) && (await bcrypt.compare(myPassword,user.password))){
+
+		try{
+
+		const token = await jwt.sign({
+			name: user.name,
+			 email: user.email,
+			 role: user.role
+			},
+			 process.env.SECRET_KEY,
+			 {subject: "login-token"}
+		);
+
+
+                if(!token){
+                        res.status(403).json({Error: "Token error"});
+		}
+
+                res.json({
+			Message: "Login successful",
+			User: user,
+			Token: token
+                });
+
+
+		}catch(err){
+
+		res.status(err.status || 404).json({Error: err.message});
+		}
+
+	}else{
+		res.status(403).json({Errr: "Email and password mis match"});
+	}
+
+});
+
+
+
+
+
+//VERIFICATION MIDDLEWARE FOR ROUTES
+
+const authorization = (role)=>{
+
+
+	return async (req,res,next)=>{
+
+
+	const authHeads = req.headers["authorization"];
+	const token = authHeads && authHeads.split(" ")[1];
+
+
+	await jwt.verify(token, process.env.SECRET_KEY, (err, decoded)=>{
+		if(err){
+			res.status(401).json({Error: err.message});
+		}
+
+
+		req.user = decoded;
+
+		if(role == req.user.role){
+			next();
+		}else{
+			res.status(403).json({Error: "Role not suported for this rout"});
+		}
+	});
+}
+
+} //OUTER FUNCTION
+
+
+
+
+
+//PROCTED ROUT
+
+app.get(`/user/profile`, authorization("user"), async (req,res)=>{
+
+	res.json({
+		Message: "Verification successful",
+		UserDetails: req.user,
+	});
+
+
+});
+
+
+
+//PROTECTED ADMIN ROUT
+
+app.get(`/admin/profile`, authorization("admin"), async (req,res)=>{
+
+	res.json({
+		Message: "Admin verification successful",
+		AdminDetails: req.user
+	});
+});
+
+
+
+
+
+//ERROR HAANDELIN MIDDLEWARE
+
+app.use((err,req,res,next)=>{
+	if(err) return res.status(err.status || 404).json({Error: err.message});
+	next();
+});
+
+
+
+
+
+app.listen(3000,()=> console.log(`Server running on port no 3000`));

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    MATH 1
+  </h1>
+  <p>The Leibnitz theorem is used to generalise the product rule of differentiation. It states that if there are two functions let them be a(x) and b(x) and if they both are differentiable individually, then their product a(x). b(x) is also n times differentiable.</p>
+  <h3>
+    Derivation of the Leibnitz Theorem/Formula
+  </h3>
+  <p>
+    If A and B are the functions of x1, then dn(AB)/dxn = [nC0.An.B] + [nC1.An-1.B1] + [nC2.An-2.B2] + [nCr.An-r.Br] +...........+ [nCn.A.Bn]. Thus, the theorem will be proved by induction.
+  </p>
+  <h3>
+    STEP 1
+  </h3>
+  <p>
+    By actual differentiation, we already know that(AB)1 = A1.B + A.B1 (AB)2= (A2.B + A1.B1) + (A1.B1 + A.B2)= A2.B + 2A1.B1 + A.B2= A2.B + 2A1.B1+ A.B2= A2.B + 2C1 A1.B1 + A.B2Hence, the theorem holds true for n = 1,2.
+  </p>
+  <h3>
+    STEP 2
+  </h3>
+  <p>
+    We assume that the theorem is true for a particular value of n say k, so we have:(AB)k = [Ak.B] + [kC1 Ak−1.B1] + [kC2 Ak−2.B2] + ...+ [kCr1Ak−r+1.Br−1] + [kCr Ak−r.Br + kCk A.Bk]Differentiating both sides, we get (AB)k+1 = [Ak+1.B + Ak.B1] + [kC1 Ak.B1 + kC1 . Ak−1.B2] +...+ [kC2 Ak−1.B2 + kC2 Ak−2.B3] + ...+ [kCr−1 Ak−r+2.Br−1] + [kCr−1 Ak−r+1.Br] + [kCr Ak−r+1.Br + kCr Ak−r.Br+1] +...[kCk A1.Bk + kCk A.Bk+1 (AB)k+1]= [Ak+1.B +(1 + kC1) Ak.B1] + (kC1 + kC2) Ak−1.B2 +...+ ( kCr−1+ kCr ) Ak−r+1.Br +...+ kCk A.Bk+1 (kCr−1 + kCr = (k+1)Cr) (AB)k+1.= Ak+1.B + (k+1)C1 Ak.B1 + (k+1)C2Ak−1.B2 +...+ (k+1)Cr Ak−r+1.Br +...+ (k+1)Ck+1 A.Bk+1 Thus, the theorem is true for n = k+1, i.e., it also holds true for the next higher integral value of k. Given that, we have observed that the theorem is true for n = 2, therefore, the theorem is true for (n = 2 + 1), i.e., n = 3, and, therefore, further true for n = 4 and so on. Hence, the theorem is true for all positive real values of n.
+  </p>
+</body>
+</html>

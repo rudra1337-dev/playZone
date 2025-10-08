@@ -1,0 +1,10 @@
+const path=require("path");
+
+let FilePath=path.resolve("fsc.txt");
+
+console.log(path.basename(FilePath));
+
+console.log(path.extname(FilePath));
+
+console.log(path.dirname(FilePath));
+

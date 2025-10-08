@@ -1,0 +1,37 @@
+const fs=require("fs");
+
+
+fs.writeFile("hello.txt","jhhjjujujujnn",(err)=>{
+if(err){
+console.log(err);
+}else{
+console.log("File created");
+
+fs.appendFile("hello.txt","\nappended text",(err)=>{
+if(err){
+console.log(err);
+}else{
+console.log("Text appended");
+
+fs.readFile("hello.txt","utf8",(err,data)=>{
+if(err){
+console,log(err);
+}else{
+console.log(data);
+
+fs.unlink("hello.txt",(err)=>{
+if(err){                                                               console.log(err);
+}else{
+console.log("File deleted");
+}
+});
+
+}
+});
+
+}
+});
+
+
+}
+});

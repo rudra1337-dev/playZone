@@ -1,0 +1,43 @@
+
+
+h1{
+  text-align: center;
+  color:#333;
+}
+
+body{
+  font-family: Arial, san-serif;
+  line-height: 
+}
+
+.container{
+  width:80%;
+  margine:auto;
+  overflow:hidden;
+  padding:20px;
+}
+
+#task-form button{
+  padding:10px 20px; //clockwisr
+  backgound:black;
+  color:#fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 40px;
+  cursor: oointer;
+}
+
+#prioraty{
+  flex-grow: 1;
+  padding: 1px;
+  font-size: 16px;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  width:100px;
+}
+
+
+#task-list{
+  list-style-type: 
+}
+
