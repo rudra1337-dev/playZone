@@ -510,8 +510,13 @@ public class Ll{
     System.out.println("Palendrome- "+ll.isPalendrome(ll.head));
     */
     
+    ll.insertFirst(9);
+    ll.insertFirst(10);
+    ll.insertFirst(11);
     ll.print();
     ll.zigzag(ll.head);
     ll.print();
+    
+  
   }
 }
