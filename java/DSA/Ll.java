@@ -455,6 +455,7 @@ class SLL{
       
     }
     
+    tail = mid;
     return head;
   }
   
@@ -517,6 +518,6 @@ public class Ll{
     ll.zigzag(ll.head);
     ll.print();
     
-  
+    System.out.println(ll.head.data+","+ll.tail.data);
   }
 }
