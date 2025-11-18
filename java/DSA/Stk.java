@@ -144,6 +144,8 @@ class StackLl{
 }
 
 class StackB{
+
+
   void pushBottom(Stack<Integer> s, int data){
     if(s.isEmpty()){
       s.push(data);
@@ -175,7 +177,113 @@ class StackB{
 
   
   
- 
+  void reverseStk(Stack<Integer> s){
+    if(s.isEmpty()){
+      return;
+    }
+
+    int temp = s.pop();
+    reverseStk(s);
+    s = insertAtBtm(s,temp);
+  }
+
+  Stack<Integer> insertAtBtm(Stack<Integer> s, int data){
+    if(s.isEmpty()){
+      s.push(data);
+      return s;
+    }
+
+    int temp = s.pop();
+    s = insertAtBtm(s, data);
+    s.push(temp);
+
+    return s;
+  }
+
+
+  void stockSpan(int[] stocks, int[] span){
+      Stack<Integer> s = new Stack<Integer>();
+
+      span[0] = 1;
+      s.push(0);
+
+      for(int i = 1; i<=stocks.length-1; i++){
+        int curr = stocks[i];
+
+        while(!s.isEmpty() && curr >= stocks[s.peek()]){
+          s.pop();
+        }
+
+        if(s.isEmpty()){
+          span[i] = i+1;
+        }else{
+          span[i] = i-s.peek();
+        }
+        s.push(i);
+      }
+
+      return;
+  }
+
+
+
+
+
+
+  void nextGreater(int[] arr, int[] neGr){
+    Stack<Integer> s = new Stack<>();
+
+    neGr[arr.length-1] = -1;
+    s.push(arr[arr.length-1]);
+
+    for(int i=arr.length-2; i>=0; i--){
+      int curr = arr[i];
+
+      while(!s.isEmpty() && curr >= s.peek()){
+        s.pop();
+      }
+
+      if(s.isEmpty()){
+        neGr[i] = -1;
+      }else{
+        neGr[i] = s.peek();
+      }
+
+      s.push(arr[i]);
+    }
+  }
+
+
+
+boolean isPaired(String str){
+    Stack<Character> s = new Stack<>();
+    
+    for(int i = 0; i < str.length(); i++){
+        char ch = str.charAt(i);
+
+        // opening brackets
+        if(ch == '(' || ch == '{' || ch == '['){
+            s.push(ch);
+        } else {
+            // closing bracket case
+            if(s.isEmpty()) return false;
+
+            char top = s.peek();
+
+            if( (top == '(' && ch == ')') ||
+                (top == '{' && ch == '}') ||
+                (top == '[' && ch == ']') ){
+                s.pop();
+            } else {
+                return false;
+            }
+        }
+    }
+
+    return s.isEmpty();
+}
+
+
 }
 
 public class Stk{
@@ -221,7 +329,42 @@ public class Stk{
 
     String ls = ss.reversString(str);
     System.out.println(ls);
+
+    System.out.println(s);
+    ss.reverseStk(s);
+    System.out.println(s);
+
+
+
+
+
+    int stocks[] = {100,80,60,70,60,85,100};
+    int[] span = new int[stocks.length];
+
+    ss.stockSpan(stocks, span);
+
+    for(int i = 0; i<=span.length-1; i++){
+      System.out.print(span[i]+",");
+    }
+    System.out.println();
+
+
+
+    int arr[] = {6,8,0,1,3};
+    int[] neGr = new int[arr.length];
    
+    ss.nextGreater(arr, neGr);
+
+    for(int i=0; i<=neGr.length-1; i++){
+      System.out.print(neGr[i]+",");
+    }
+    System.out.println();
+
+
+
+
+    String sss = "{([])}";
     
+    System.out.print(ss.isPaired(sss));
   }
 }

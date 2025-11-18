@@ -1,1 +1,48 @@
+take a stack
 
+push 0 
+sp(0) = 1
+
+for(i = , i <= arr.len)
+        while if arr[peak] < arr[i]
+        => s.pop and 
+        }
+        SP(I) = I-PEAK
+
+
+
+        take a stack
+
+        push arr[n-1]
+        ng[n-1] = arr[-1]
+
+        for( n-2 >= 0){
+            it curr = [arr[i];
+            
+            while(!s.isEmty && curr < a[[s.peak]])]{
+                pop
+            }
+
+            if emty =ng = -1
+            else ng = s.peek
+
+            push arr[i]
+        }
+
+
+
+        [{()}]
+
+        create a stack
+
+        for(0 to str.length()) push if [{(
+
+            else open
+
+            isempty false 
+            else if pair continue
+            else false
+
+            s.empty true
+            else false
+            
