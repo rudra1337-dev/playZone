@@ -155,11 +155,32 @@ class StackB{
     s.push(temp);
     
   }
+
+  String reversString(String str){
+
+    Stack<Character> s = new Stack<>();
+    
+    for(int i= 0; i<=str.length()-1; i++){
+      s.push(str.charAt(i));
+    }
+
+    StringBuilder ss = new StringBuilder();
+
+    for(int i= s.size()-1; i>=0; i--){
+      ss.append(s.pop());
+    }
+    
+    return ss.toString();
+  }
+
   
-  void reverseStr()
+  
+ 
 }
 
 public class Stk{
+
+  
   public static void main(String args[]){
     System.out.println("Welcome to stack");
     /*
@@ -195,6 +216,12 @@ public class Stk{
     StackB ss = new StackB();
     ss.pushBottom(s, 99);
     System.out.println(s);
+
+    String str = "This is rudra";
+
+    String ls = ss.reversString(str);
+    System.out.println(ls);
+   
     
   }
 }
