@@ -254,35 +254,62 @@ class StackB{
   }
 
 
+/*
+  boolean isPaired(String str){
+      Stack<Character> s = new Stack<>();
 
-boolean isPaired(String str){
+      for(int i = 0; i < str.length(); i++){
+          char ch = str.charAt(i);
+
+          // opening brackets
+          if(ch == '(' || ch == '{' || ch == '['){
+              s.push(ch);
+          } else {
+              // closing bracket case
+              if(s.isEmpty()) return false;
+
+              char top = s.peek();
+
+              if( (top == '(' && ch == ')') ||
+                  (top == '{' && ch == '}') ||
+                  (top == '[' && ch == ']') ){
+                  s.pop();
+              } else {
+                  return false;
+              } 
+          }
+      }
+
+      return s.isEmpty();
+  }
+
+*/
+
+  boolean isPaired(String str){
     Stack<Character> s = new Stack<>();
-    
-    for(int i = 0; i < str.length(); i++){
-        char ch = str.charAt(i);
 
-        // opening brackets
-        if(ch == '(' || ch == '{' || ch == '['){
-            s.push(ch);
-        } else {
-            // closing bracket case
-            if(s.isEmpty()) return false;
+    for(int i=0; i<=str.length()-1; i++){
+      char ch = str.charAt(i);
 
-            char top = s.peek();
-
-            if( (top == '(' && ch == ')') ||
-                (top == '{' && ch == '}') ||
-                (top == '[' && ch == ']') ){
-                s.pop();
-            } else {
-                return false;
-            }
+      if(ch == '(' || ch == '{' || ch == '['){
+        s.push(ch);
+      }else{
+        //close condition
+        if(s.isEmpty()){
+          return false;
+        } 
+        if( (s.peek()=='(' && ch==')')
+        || (s.peek()=='{' && ch=='}')
+        || (s.peek()=='[' && ch==']')){
+          s.pop();
+        }else{
+          return false;
         }
+      }
     }
-
-    return s.isEmpty();
-}
-
+    
+    return true;
+  }
 
 }
 
@@ -363,7 +390,7 @@ public class Stk{
 
 
 
-    String sss = "{([])}";
+    String sss = "ssyt{([])}";
     
     System.out.print(ss.isPaired(sss));
   }
