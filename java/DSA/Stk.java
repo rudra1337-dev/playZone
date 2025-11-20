@@ -310,6 +310,30 @@ class StackB{
     
     return true;
   }
+  
+  boolean duplicateParenthisis(String str){
+    Stack<Character> s = new Stack<>();
+    
+    for(int i=0; i<=str.length()-1; i++){
+      char ch = str.charAt(i);
+      int count = 0;
+      
+      
+      if(ch==')'){
+        while(s.peek()!='('){
+          s.pop();
+          count++;
+        }
+        
+        s.pop();
+        if(count<1) return true;
+      }else{
+        s.push(ch);
+      }
+    }
+    
+    return false;
+  }
 
 }
 
@@ -393,5 +417,10 @@ public class Stk{
     String sss = "ssyt{([])}";
     
     System.out.print(ss.isPaired(sss));
+    
+    
+    
+    String sp = "((c+d)+(a+b))";
+    System.out.println("Duplicate parenthisis = "+ss.duplicateParenthisis(sp));
   }
 }
