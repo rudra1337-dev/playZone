@@ -341,31 +341,32 @@ String infixToPostfix(String str){
   Stack<Character> s = new Stack<>();
   StringBuilder res = new StringBuilder();
   
-  //Scanníng frpm l to r
-  for(int i=0; i<=str.length()-1; i++){
+  for(int i= 0; i<=str.length()-1; i++){
     char ch = str.charAt(i);
     
     if(Character.isLetterOrDigit(ch)){
       res.append(ch);
-    }else if(ch == ')'){
+    }else if(ch == '('){
+      s.push(ch);
+    }else if(ch==')'){
       while(!s.isEmpty() && s.peek()!='('){
         res.append(s.pop());
       }
-      if(s.isEmpty()) return "";
       s.pop();
-    }else if(ch=='('){
-      s.push(ch);
     }else{
-      while(!s.isEmpty() && prec(ch) >= prec(s.peek())){
+      //operators
+      while(!s.isEmpty() && prec(ch) <= prec(s.peek())){
         res.append(s.pop());
-      }else{
-        s.push(ch);
+      }
+      s.push(ch);
     }
+  }
+  
+  while(!s.isEmpty()){
+    res.append(s.pop());
   }
   return res.toString();
 }
-
-
 
 int prec(char ch){
   switch(ch){
@@ -374,11 +375,31 @@ int prec(char ch){
     case '*': return 2;
     case '+':
     case '-': return 1;
-    //default : return -1;
   }
   return -1;
 }
-
+  
+  int postfixEval(String str){
+    Stack<Integer> s = new Stack<>();
+    
+    for(int i = 0; i<= str.length()-1; i++){
+      char ch = str.charAt(i);
+      
+      if(Character.isDigit(ch)){
+        s.push(ch-'0'); 
+      }else{
+        int b=s.pop(), a=s.pop();
+        int res = 0;
+        if(ch=='+')res = a+b;
+        if(ch == '-')res = a-b;
+        if(ch == '*')res = a*b;
+        if(ch == '/')res = a/b;
+        s.push(res);
+      }
+      
+    }
+    return s.pop();
+  }
 
 }
 
@@ -468,6 +489,8 @@ public class Stk{
     String sp = "((c+d)+(a+b))";
     System.out.println("Duplicate parenthisis = "+ss.duplicateParenthisis(sp));
     
-    System.out.println(ss.infixToPostfix("(A+B*C)"));
+    String post = ss.infixToPostfix("((A+B)*C)-(D-E)*(F+G)");
+    System.out.println(post);
+    System.out.println(ss.postfixEval("23+54*62/-3+*"));
   }
 }
