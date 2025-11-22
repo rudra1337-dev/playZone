@@ -401,6 +401,84 @@ int prec(char ch){
     return s.pop();
   }
 
+
+
+  int presc(char ch){
+    switch(ch){
+      case '^': return 3;
+      case '/':
+      case '*': return 2;
+      case '+':
+      case '-': return 1;
+    }
+
+    return -1;
+  }
+
+
+  String infixToPrefix(String str){
+    Stack<Character> s = new Stack<>();
+    StringBuilder res = new StringBuilder();
+
+
+    //reverse the infix
+    for(int i=0; i<=str.length()-1; i++){
+      s.push(str.charAt(i));
+    }
+
+    for(int i=0; i<=str.length()-1; i++){
+      res.append(s.pop());
+      if(res.charAt(i)=='(') res.setCharAt(i,')');
+      else if(res.charAt(i)==')') res.setCharAt(i,'(');
+    }
+    str = res.toString();
+
+
+
+    //convert infix to postfix
+    res = new StringBuilder();
+    s = new Stack<>();
+
+    for(char ch : str.toCharArray()){
+
+      if(Character.isLetterOrDigit(ch)){
+        s.append(ch);
+      }else if(ch=='('){
+        s.push(ch);
+      }else if(ch==')'){
+        while(!s.isEmpty() && s.peek()!=')'){
+          s.append(s.pop());
+        }
+        s.pop();
+      }else{
+        while(!s.isEmpty() && presc(ch) <= presc(s.peek())){
+          res.append(s.pop());
+        }
+        s.push(ch);
+      }
+    }
+
+    while(setCharAt!s.isEmpty()){
+      s.append(s.pop());
+    }
+
+
+
+    //reverse the postfix res = prefix
+    for(int i=0; i<=str.length()-1; i++){
+      s.push(res.charAt(i));
+    }
+
+    res = new StringBuilder();
+    while(!s.isEmptyZ()){
+      res.append(s.pop());
+      // if(res.charAt(i)=='(') res.setCharAt(i,')');
+      // else if(res.charAt(i)==')') res.setCharAt(i,'(');
+    }
+
+    return res.toString();
+  }
+
 }
 
 public class Stk{
@@ -492,5 +570,8 @@ public class Stk{
     String post = ss.infixToPostfix("((A+B)*C)-(D-E)*(F+G)");
     System.out.println(post);
     System.out.println(ss.postfixEval("23+54*62/-3+*"));
+
+    String pref = ss.infixToPrefix("X+Y*Z^W");
+    System.out.println(pref);
   }
 }
