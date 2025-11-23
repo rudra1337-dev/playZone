@@ -442,12 +442,12 @@ int prec(char ch){
     for(char ch : str.toCharArray()){
 
       if(Character.isLetterOrDigit(ch)){
-        s.append(ch);
+        res.append(ch);
       }else if(ch=='('){
         s.push(ch);
       }else if(ch==')'){
         while(!s.isEmpty() && s.peek()!=')'){
-          s.append(s.pop());
+          res.append(s.pop());
         }
         s.pop();
       }else{
@@ -458,8 +458,8 @@ int prec(char ch){
       }
     }
 
-    while(setCharAt!s.isEmpty()){
-      s.append(s.pop());
+    while(!s.isEmpty()){
+      res.append(s.pop());
     }
 
 
@@ -470,13 +470,40 @@ int prec(char ch){
     }
 
     res = new StringBuilder();
-    while(!s.isEmptyZ()){
+    while(!s.isEmpty()){
       res.append(s.pop());
       // if(res.charAt(i)=='(') res.setCharAt(i,')');
       // else if(res.charAt(i)==')') res.setCharAt(i,'(');
     }
 
     return res.toString();
+  }
+  
+  
+  
+  
+  int prefixEval(String str){
+    StringBuilder st = new StringBuilder(str);
+    str = st.reverse().toString();
+    StringBuilder sb = new StringBuilder();
+    Stack<Integer> s = new Stack<>();
+    
+    for(char ch : str.toCharArray()){
+      if(Character.isDigit(ch)){
+        s.push(ch-'0');
+      }else{
+        //operator case
+        int b=s.pop(), a=s.pop();
+        int res = 0;
+        if(ch=='+') res = a+b;
+        if(ch=='-') res = a-b;
+        if(ch=='*') res = a*b;
+        if(ch=='/') res = a/b;
+        s.push(res);
+      }
+    }
+    
+    return s.pop();
   }
 
 }
@@ -573,5 +600,6 @@ public class Stk{
 
     String pref = ss.infixToPrefix("X+Y*Z^W");
     System.out.println(pref);
+    System.out.println(ss.prefixEval("+9*26"));
   }
 }
