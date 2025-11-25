@@ -575,7 +575,7 @@ public class Stk{
     int arr[] = {6,8,0,1,3};
     int[] neGr = new int[arr.length];
    
-    ss.nextGreater(arr, neGr);
+    ss.next Greater(arr, neGr);
 
     for(int i=0; i<=neGr.length-1; i++){
       System.out.print(neGr[i]+",");
