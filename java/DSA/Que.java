@@ -1,3 +1,4 @@
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -236,6 +237,186 @@ class StackQ{
 
 
 
+class CQue{
+  int front, rear, size;
+  int arr[];
+
+  CQue(int size){
+    this.size = size;
+    arr = new int[size];
+    front = -1;
+    rear = -1;
+  }
+
+
+  void enqueue(int data){
+    if(front == (rear+1)%size){
+      System.out.println("Queue is full");
+      return;
+    }
+    if(front == -1){
+      front = rear = 0;
+    }else{
+      rear = (rear+1)%size;
+    }
+    arr[rear] = data;
+    System.out.println(arr[rear]+" is added");
+  }
+
+  int dequeue(){
+    if(front == -1){
+      System.out.println("Queue is empty");
+      return -1;
+    }
+
+    int res = arr[front];
+    System.out.println(arr[front]+" is deleted");
+    if(front == rear){
+      front = rear = -1;
+    }else{
+      front = (front+1)%size;
+    }
+    return res;
+  }
+
+  int peek(){
+    if(front == -1){
+      System.out.println("Queue is empty");
+      return -1;
+    }
+
+    System.out.println("Front = "+arr[front]);
+    return arr[front];
+  }
+
+  boolean isEmpty(){
+    return front == -1;
+  }
+
+  boolean isFull(){
+    return front == (rear+1)%size;
+  }
+}
+
+
+
+
+
+class DequeA {
+  int size, front, rear;
+  int[] arr;
+
+  DequeA(int size){
+    this.size = size;
+    arr = new int[size];
+    front = -1;
+    rear = -1;
+  }
+
+  void addFirst(int data){
+    if((front == 0 && rear == size-1) || front == rear+1){
+      System.out.println("Deque is full");
+      return;
+    }
+
+    if(front == -1){
+      front = rear = 0;
+    } else if(front == 0){
+      front = size - 1;
+    } else {
+      front--;
+    }
+
+    arr[front] = data;
+    System.out.println(arr[front] + " is added");
+  }
+
+  void addLast(int data){
+    if((front == 0 && rear == size-1) || front == rear+1){
+      System.out.println("Deque is full");
+      return;
+    }
+
+    if(rear == -1){
+      front = rear = 0;
+    } else if(rear == size-1){
+      rear = 0;
+    } else {
+      rear++;
+    }
+
+    arr[rear] = data;
+    System.out.println(arr[rear] + " is added");
+  }
+
+  int removeFirst(){
+    if(front == -1 && rear == -1){
+      System.out.println("Deque is empty");
+      return -1;
+    }
+
+    int res = arr[front];
+
+    if(front == rear){
+      front = rear = -1;
+    } else if(front == size-1){
+      front = 0;
+    } else {
+      front++;
+    }
+
+    System.out.println(res + " is deleted");
+    return res;
+  }
+
+  int removeLast(){
+    if(front == -1 && rear == -1){
+      System.out.println("Deque is empty");
+      return -1;
+    }
+
+    int res = arr[rear];
+
+    if(front == rear){
+      front = rear = -1;
+    } else if(rear == 0){
+      rear = size - 1;
+    } else {
+      rear--;
+    }
+
+    System.out.println(res + " is deleted");
+    return res;
+  }
+
+  int getFirst(){
+    if(front == -1 && rear == -1){
+      System.out.println("Deque is empty");
+      return -1;
+    }
+    System.out.println("Front = " + arr[front]);
+    return arr[front];
+  }
+
+  int getLast(){
+    if(front == -1 && rear == -1){
+      System.out.println("Deque is empty");
+      return -1;
+    }
+    System.out.println("Rear = " + arr[rear]);
+    return arr[rear];
+  }
+
+  boolean isFull(){
+    return (front == 0 && rear == size-1) || (front == rear+1);
+  }
+
+  boolean isEmpty(){
+    return front == -1 && rear == -1;
+  }
+}
+
+
 class QueueProb{
     
   char firstNonRepeatingEle(String str){
@@ -300,7 +481,8 @@ public class Que{
     //QueueA q = new QueueA(3);
     //QueueL q = new QueueL();
     // Queue q = new LinkedList<>();
-    QueueS q = new QueueS();
+    //QueueS q = new QueueS();
+    CQue q = new CQue(3);
 
     q.enqueue(2);
     q.enqueue(3);
