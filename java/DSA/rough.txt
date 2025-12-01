@@ -46,3 +46,12 @@ for(i = , i <= arr.len)
             s.empty true
             else false
             
+
+
+
+            1
+            10
+            100
+            1000
+            10000
+            1000000
