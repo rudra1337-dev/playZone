@@ -30,6 +30,14 @@ public class BitManu{
         n = n|bitMask;
         System.out.println(n);
     }
+    
+    
+    public static void clearLastIthBits(int n, int i){
+      int bitMask = ~(0)<<i;
+      
+      n = n&bitMask;
+      System.out.println(n);
+    }
 
     public static void main(String[] args){
         System.out.println("WELCOMETO BITMANUPULATIONS");
@@ -42,6 +50,9 @@ public class BitManu{
 
         setIthBit(3,2);
         setIthBit(4,3);
+        
+        clearLastIthBits(1,1);
+        clearLastIthBits(7,1);
 
     }
 }
