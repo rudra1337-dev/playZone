@@ -106,6 +106,22 @@ public class BitManu{
         System.out.println(n+" has "+count+" set bits");
     }
 
+
+
+
+    public static int fastExpo(int n, int p){
+        int res = 1, a = n;
+
+        while(!(p==0)){
+            if((p&1)==1) res *= a;
+            a *= a;
+            p = p>>1;
+        }
+
+        System.out.println("Ans = "+res);
+        return res;
+    }
+
     public static void main(String[] args){
         System.out.println("WELCOMETO BITMANUPULATIONS");
 
@@ -133,6 +149,7 @@ public class BitManu{
         countSetBits(15);
         countSetBits(14);
 
-
+        fastExpo(5,3);
+        fastExpo(2, 4);
     }
 }
