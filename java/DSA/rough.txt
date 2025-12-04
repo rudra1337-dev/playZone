@@ -55,3 +55,17 @@ for(i = , i <= arr.len)
             1000
             10000
             1000000
+
+
+
+
+
+
+
+
+
+            base case 
+            n=0 return "0"
+            n=1 return "1","0"
+            n=2 return "10","01","00"
+            

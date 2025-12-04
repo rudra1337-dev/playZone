@@ -88,6 +88,14 @@ public static int fibonachhie(int n){
     return power;
   }
   
+
+  public static int waysOfTiling(int n){
+    //Base cases
+    if(n==0 || n==1) return 1;
+    if(n==2) return 2;
+
+    return waysOfTiling(n-1)+waysOfTiling(n-2);
+  }
   
   public static String removeDuplicates(String str, StringBuilder sb, int idx, boolean[] map){
     //base case
@@ -107,6 +115,41 @@ public static int fibonachhie(int n){
     
     //recursion call
     return removeDuplicates(str, sb, idx+1, map);
+  }
+
+
+
+
+  //Friends pairing probem
+  public static int wayToPair(int n){
+    if(n==0 || n==1) return 1;
+    if(n==2) return 2;
+
+    int Wasyofsingle = wayToPair(n-1);
+    int Waysofpair = wayToPair(n-2);
+
+    int totalWays = Wasyofsingle + (n-1)*Waysofpair;
+
+    return totalWays;
+  }
+
+
+  //IMp print binary string
+  public static void printBinStrings(int n, int lp, String str){
+    if(n == 0){
+      System.out.println(str);
+      return;
+    }
+
+    if(lp == 0){
+      printBinStrings(n-1, 0, str+0); // for 0
+      printBinStrings(n-1, 1, str+1); // fro 1
+    }else{
+      //for lp == 1 skip printing 1
+      printBinStrings(n-1, 0, str+0); // only for 0
+    }
+
+
   }
   
   
@@ -136,7 +179,20 @@ public static int fibonachhie(int n){
     StringBuilder sb = new StringBuilder();
     removeDuplicates("ruddraa", sb, 0, map);
     
-    
+    System.out.println("Ways of tiling = "+waysOfTiling(0));
+    System.out.println("Ways of tiling = "+waysOfTiling(1));
+    System.out.println("Ways of tiling = "+waysOfTiling(2));
+    System.out.println("Ways of tiling = "+waysOfTiling(3));
+    System.out.println("Ways of tiling = "+waysOfTiling(4));
+
+
+
+
+    System.out.println("Ways to pair friends = "+wayToPair(3));
+
+    printBinStrings(3, 0, "");
+
+
   }
   
 }
