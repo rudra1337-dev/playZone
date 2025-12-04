@@ -89,6 +89,27 @@ public static int fibonachhie(int n){
   }
   
   
+  public static String removeDuplicates(String str, StringBuilder sb, int idx, boolean[] map){
+    //base case
+    if(idx == str.length()-1){
+      System.out.println(sb);
+      return sb.toString();
+    }
+    
+    //checke is the char already exist
+    char ch = str.charAt(idx);
+    if(!(map[ch-'a']==true)){
+      sb.append(ch);
+    }
+    
+    //update the char map
+    map[ch-'a'] = true;
+    
+    //recursion call
+    return removeDuplicates(str, sb, idx+1, map);
+  }
+  
+  
   public static void main(String args[]){
     System.out.println("WELCOME TO RECURSION");
     
@@ -111,6 +132,9 @@ public static int fibonachhie(int n){
     System.out.println("5 to the power of 4 ="+Pow(5,4));
     System.out.println("5 to the power of 4 ="+OptimizedPow(5,4));
     
+    boolean[] map = new boolean[26];
+    StringBuilder sb = new StringBuilder();
+    removeDuplicates("ruddraa", sb, 0, map);
     
     
   }
