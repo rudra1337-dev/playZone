@@ -151,6 +151,92 @@ public static int fibonachhie(int n){
 
 
   }
+
+
+
+
+  //Divide and concure 
+  //merge sort and quick sort is completed on array chapter
+  //this is sorted and roted array
+  public static int sortedAndRoted(int arr[], int target, int st, int end){
+    if(st > end) return -1;
+
+    int mid = st+(end-st)/2;
+
+    //base case
+    if(arr[mid] == target) return mid;
+    
+
+    //work
+    //L1 case
+    if(arr[st] <= arr[mid]){
+      //case L1 left
+      if(arr[st] <= target && target <= arr[mid]){
+        return sortedAndRoted(arr, target, st, mid-1);
+
+        //case L1 right + l2
+      }else{
+        return sortedAndRoted(arr, target, mid+1, end);
+      }
+    }
+
+    //L2 case
+    //if(arr[mid] <= arr[end]){
+    else{
+      //case R1 right
+      if(arr[mid] >= target && target >= arr[end]){
+        return sortedAndRoted(arr, target, mid+1, end);
+
+        //case L2 left + L1
+      }else{
+        return sortedAndRoted(arr, target, st, mid-1);
+      }
+    }
+
+  }
+
+
+  //loop method of sortedRoted problem
+  public static int sortedAndRoted1(int[] arr, int target, int st, int end){
+
+    while(!(st>end)){
+
+      int mid = st+(end-st)/2;
+
+      //base case
+      if(arr[mid] == target) return mid;
+      
+      //L1 case
+      if(arr[st]<=arr[mid]){
+        //case a L1 left
+        if(arr[st] <= target && target <= arr[mid]){
+          //st = st;
+          end = mid-1;
+
+          //case b l1 left + L2
+        }else{
+          st = mid+1;
+          //end = end;
+        }
+
+
+        //L2 case
+      }else{ // if(arr[mid]<=arr[end])
+
+        //case L2 right
+        if(arr[mid]<=target && target<=arr[end]){
+        st = mid+1;
+        //end = end;
+        }else{
+          //case L2 left + L1
+          //st = st;
+          end = mid-1;
+        }
+      }
+    }
+
+    return -1;
+  }
   
   
   public static void main(String args[]){
@@ -192,6 +278,18 @@ public static int fibonachhie(int n){
 
     printBinStrings(3, 0, "");
 
+
+
+    int arr[] = {4,5,6,7,0,2};
+    System.out.println("O is present at "+sortedAndRoted(arr, 0, 0, arr.length-1)+"th position");
+    System.out.println("4 is present at "+sortedAndRoted(arr, 4, 0, arr.length-1)+"th position");
+    System.out.println("5 is present at "+sortedAndRoted(arr, 5, 0, arr.length-1)+"th position");
+
+
+
+    System.out.println("O is present at "+sortedAndRoted1(arr, 0, 0, arr.length-1)+"th position");
+    System.out.println("4 is present at "+sortedAndRoted1(arr, 4, 0, arr.length-1)+"th position");
+    System.out.println("5 is present at "+sortedAndRoted1(arr, 5, 0, arr.length-1)+"th position");
 
   }
   
