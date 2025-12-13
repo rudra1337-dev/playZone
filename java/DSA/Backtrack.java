@@ -201,6 +201,8 @@ class Backtrack {
     return true;
   }
 
+  // ------------Grid ways---------------
+
   public static int gridWays(int[][] arr, int i, int j) {
     // base case
     // we have one choice if i am on the target mand n then ways = 1
@@ -230,6 +232,101 @@ class Backtrack {
     int nomi = factorial(arr.length - 1 + arr[0].length - 1);
     int denomi = factorial(arr.length - 1) * factorial(arr[0].length - 1);
     return nomi / denomi;
+  }
+
+  // ------------------Sudoku solver-----------------------------
+  public static boolean sudokuSolver(int[][] arr, int row, int col) {
+    // base case
+    if (row == arr.length)
+      return true;
+
+    // if col == 9 then move to next row
+    if (col == arr.length) {
+      return sudokuSolver(arr, row + 1, 0);
+    }
+
+    // digit already given
+    // move to next iteration
+    if (arr[row][col] != 0)
+      return sudokuSolver(arr, row, col + 1);
+
+    // recursion
+    for (int i = 1; i <= 9; i++) {
+      if (isSafe4(arr, i, row, col)) {
+        // update the current digit as it safe
+        arr[row][col] = i;
+
+        // check is the next safe or not
+        if (sudokuSolver(arr, row, col + 1)) {
+          return true;
+        }
+
+        // if the next try is not safe then backtrack and try the next iteration
+        arr[row][col] = 0;
+      }
+
+    }
+
+    // no digit safe
+    return false;
+  }
+
+  public static boolean isSafe4(int[][] arr, int dig, int row, int col) {
+
+    // row case
+    // //row left
+    // for (int i = 0; i <= col; i++) {
+    // if (arr[row][i] == dig) {
+    // return false;
+    // }
+    // }
+
+    // //row right
+    // for (int i = col; i <= arr.length - 1; i++) {
+    // if (arr[row][i] == dig) {
+    // return false;
+    // }
+    // }
+
+    for (int i = 0; i <= arr.length - 1; i++) {
+      if (arr[row][i] == dig) {
+        return false;
+      }
+    }
+
+    // col case
+    // //col top
+    // for (int i = 0; i <= row; i++) {
+    // if (arr[i][col] == dig) {
+    // return false;
+    // }
+    // }
+
+    // //col bottom
+    // for (int i = row; i <= arr[0].length - 1; i++) {
+    // if (arr[i][col] == dig) {
+    // return false;
+    // }
+    // }
+
+    for (int i = 0; i <= arr[0].length - 1; i++) {
+      if (arr[i][col] == dig) {
+        return false;
+      }
+    }
+
+    // grid case
+    int r = (row / 3) * 3;
+    int c = (col / 3) * 3;
+    for (int i = r; i <= r + 2; i++) {
+      for (int j = c; j <= c + 2; j++) {
+        if (arr[i][j] == dig) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   // ---------- MAIN ----------
@@ -266,6 +363,28 @@ class Backtrack {
     int[][] arr1 = new int[n1][m];
     System.out.println(gridWays(arr1, 0, 0));
     System.out.println(gridWays2(arr1));
+
+    int sudoku[][] = { { 0, 0, 8, 0, 0, 0, 0, 0, 0 },
+        { 4, 9, 0, 1, 5, 7, 0, 0, 2 },
+        { 0, 0, 3, 0, 0, 4, 1, 9, 0 },
+        { 1, 8, 5, 0, 6, 0, 0, 2, 0 },
+        { 0, 0, 0, 0, 2, 0, 0, 6, 0 },
+        { 9, 6, 0, 4, 0, 5, 3, 0, 0 },
+        { 0, 3, 0, 0, 7, 2, 0, 0, 4 },
+        { 0, 4, 9, 0, 3, 0, 0, 5, 7 },
+        { 8, 2, 7, 0, 0, 9, 0, 1, 3 } };
+
+    if (sudokuSolver(sudoku, 0, 0)) {
+      System.out.println("Solution available");
+      for (int i = 0; i <= sudoku.length - 1; i++) {
+        for (int j = 0; j <= sudoku.length - 1; j++) {
+          System.out.print(sudoku[i][j] + " ");
+        }
+        System.out.println();
+      }
+    } else {
+      System.out.println("Solution is not available");
+    }
 
   }
 }
