@@ -1,9 +1,12 @@
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 class Backtrack {
 
   // ---------- Array Backtracking ----------
   public static void printArr(int[] arr) {
     System.out.print("Arr : ");
-    for (int num : arr) System.out.print(num + ",");
+    for (int num : arr)
+      System.out.print(num + ",");
     System.out.println();
   }
 
@@ -21,8 +24,10 @@ class Backtrack {
   // ---------- Subsets ----------
   public static void findSubset(String str, int i, StringBuilder sb) {
     if (i == str.length()) {
-      if (sb.length() == 0) System.out.println("NULL");
-      else System.out.println(sb.toString() + ",");
+      if (sb.length() == 0)
+        System.out.println("NULL");
+      else
+        System.out.println(sb.toString() + ",");
       return;
     }
 
@@ -78,20 +83,153 @@ class Backtrack {
 
     // top
     for (int i = 1; i <= row; i++) {
-      if (board[row - i][col] == 'Q') return false;
+      if (board[row - i][col] == 'Q')
+        return false;
     }
 
     // top-left
     for (int i = 1, j = 1; i <= row && j <= col; i++, j++) {
-      if (board[row - i][col - j] == 'Q') return false;
+      if (board[row - i][col - j] == 'Q')
+        return false;
     }
 
     // top-right
     for (int i = 1, j = 1; i <= row && j <= board.length - 1 - col; i++, j++) {
-      if (board[row - i][col + j] == 'Q') return false;
+      if (board[row - i][col + j] == 'Q')
+        return false;
     }
 
     return true;
+  }
+
+  // ---------------N-Queen count ways-------------
+  public static int count = 0;
+
+  public static void nQueensCount(char[][] board, int row) {
+    // base case
+    if (row == board.length) {
+      count++;
+      return;
+    }
+
+    // recursion
+    for (int j = 0; j <= board.length - 1; j++) {
+      if (isSafe1(board, row, j)) {
+        // add Q
+        board[row][j] = 'Q';
+        // recursion call
+        nQueensCount(board, row + 1);
+        // remove Q for next itteration
+        board[row][j] = 'X';
+      }
+
+    }
+  }
+
+  public static boolean isSafe1(char[][] board, int row, int col) {
+    // top
+    for (int i = 1; i <= row; i++) {
+      if (board[row - i][col] == 'Q') {
+        return false;
+      }
+    }
+
+    // top left
+    for (int i = 1, j = 1; i <= row && j <= col; i++, j++) {
+      if (board[row - i][col - j] == 'Q') {
+        return false;
+      }
+    }
+
+    // top right
+    for (int i = 1, j = 1; i <= row && j <= board.length - 1 - col; i++, j++) {
+      if (board[row - i][col + j] == 'Q') {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // ----------N-Queen one solution------
+  public static boolean nQueenOneSol(char[][] board, int row) {
+    // base case
+    if (row == board.length) {
+      print2d(board);
+      return true;
+    }
+    // recursion
+    for (int j = 0; j <= board.length - 1; j++) {
+      if (isSafe2(board, row, j)) {
+        // add Q
+        board[row][j] = 'Q';
+        // recursion call
+        // stoping recursion after oncce get the solution
+        if (nQueenOneSol(board, row + 1)) {
+          return true;
+        }
+        // removing Q for next itterTION
+        board[row][j] = 'X';
+      }
+    }
+
+    return false;
+  }
+
+  public static boolean isSafe2(char[][] board, int row, int col) {
+
+    // top
+    for (int i = 1; i <= row; i++) {
+      if (board[row - i][col] == 'Q') {
+        return false;
+      }
+    }
+
+    // toop left
+    for (int i = 1, j = 1; i <= row && j <= col; i++, j++) {
+      if (board[row - i][col - j] == 'Q') {
+        return false;
+      }
+    }
+
+    // top right
+    for (int i = 1, j = 1; i <= row && j <= board.length - 1 - col; i++, j++) {
+      if (board[row - i][col + j] == 'Q') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static int gridWays(int[][] arr, int i, int j) {
+    // base case
+    // we have one choice if i am on the target mand n then ways = 1
+    if (i == arr.length - 1 && j == arr[0].length - 1) {
+      return 1;
+    } else if (i == arr.length || j == arr[0].length) {
+      return 0;
+    }
+
+    int botom = gridWays(arr, i + 1, j);
+    int right = gridWays(arr, i, j + 1);
+
+    int totalWays = botom + right;
+    return totalWays;
+
+  }
+
+  public static int factorial(int n) {
+    if (n == 1 || n == 0) {
+      return 1;
+    }
+
+    return n * factorial(n - 1);
+  }
+
+  public static int gridWays2(int[][] arr) {
+    int nomi = factorial(arr.length - 1 + arr[0].length - 1);
+    int denomi = factorial(arr.length - 1) * factorial(arr[0].length - 1);
+    return nomi / denomi;
   }
 
   // ---------- MAIN ----------
@@ -117,6 +255,17 @@ class Backtrack {
       }
     }
 
-    nQueens(board, 0);
+    // nQueens(board, 0);
+
+    nQueensCount(board, 0);
+    System.out.println("Total way to solve n queens of n=" + n + " is " + count);
+
+    System.out.println(nQueenOneSol(board, 0));
+
+    int n1 = 3, m = 3;
+    int[][] arr1 = new int[n1][m];
+    System.out.println(gridWays(arr1, 0, 0));
+    System.out.println(gridWays2(arr1));
+
   }
 }

@@ -69,3 +69,10 @@ for(i = , i <= arr.len)
             n=1 return "1","0"
             n=2 return "10","01","00"
             
+
+
+
+
+
+            total ways  = wayss of left amd ways of right
+            w = n + m
