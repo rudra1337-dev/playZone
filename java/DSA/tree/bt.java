@@ -28,6 +28,46 @@ public class bt {
 
         return node;
     }
+    
+    public static void preorderTraversal(TreeNode root){
+      
+      if(root == null){
+        System.out.print(-1+", ");
+        return;
+      }
+      
+      System.out.print(root.data+", ");
+      
+      preorderTraversal(root.left);
+      preorderTraversal(root.right);
+      
+      return;
+    }
+    
+    
+    public static void inorderTraversal(TreeNode root){
+      if(root == null){
+        return;
+      }
+      
+      inorderTraversal(root.left);
+      System.out.print(root.data+", ");
+      inorderTraversal(root.right);
+      
+      return;
+    }
+    public static void postorderTraversal(TreeNode root){
+      if(root == null){
+        return;
+      }
+      
+      postorderTraversal(root.left);
+      postorderTraversal(root.right);
+      System.out.print(root.data+", ");
+      
+      return;
+    }
+    
 
     public static void main(String args[]) {
         System.out.println("Welcome to Tree");
@@ -37,5 +77,11 @@ public class bt {
         TreeNode root = buildTree(nums);
 
         System.out.println(root.data + " " + root.left.data + " " + root.right.data);
+        
+        preorderTraversal(root);
+        System.out.println();
+        inorderTraversal(root);
+        System.out.println();
+        postorderTraversal(root);
     }
 }
