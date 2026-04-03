@@ -101,14 +101,42 @@ public class bt {
         }
     }
 
-    // Inorder build
+    // leavel build
     public static TreeNode buildTreeLevelorder(int[] nums) {
+        Deque<TreeNode> que = new LinkedList<>();
 
-        if()
+        int j = 0;
 
-        TreeNode node = new TreeNode();
+        TreeNode root = new TreeNode(nums[j++]);
+        que.add(root);
 
-        node.left = buildTreeInOrder(nums);
+        while (!que.isEmpty()) {
+
+            TreeNode curr = que.remove();
+
+            if (j < nums.length) {
+                if (nums[j] == -1) {
+                    curr.left = null;
+                    j++;
+                } else {
+                    curr.left = new TreeNode(nums[j++]);
+                    que.add(curr.left);
+                }
+            }
+
+            if (j < nums.length) {
+                if (nums[j] == -1) {
+                    curr.right = null;
+                    j++;
+                } else {
+                    curr.right = new TreeNode(nums[j++]);
+                    que.add(curr.right);
+                }
+            }
+
+        }
+
+        return root;
     }
 
     public static void main(String args[]) {
@@ -117,10 +145,10 @@ public class bt {
         int[] nums = { 1, 2, -1, -1, 3, 4, -1, -1, 5, -1, -1 };
         int[] inorder = { -1, 2, -1, 1, -1, 4, -1, 3, -1, 5, -1, };
         int[] postorder = { -1, -1, 2, -1, -1, 4, -1, -1, 5, 3, 1, };
-        int[] levelorder = {1, 2, 3, -1, -1, 4, }
+        int[] levelorder = { 1, 2, 3, -1, -1, 4, 5 };
 
         // TreeNode root = buildTree(nums);
-        TreeNode root = buildTreeInOrder(nums);
+        TreeNode root = buildTreeLevelorder(levelorder);
 
         System.out.println(root.data + " " + root.left.data + " " + root.right.data);
 
