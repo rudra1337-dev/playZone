@@ -186,7 +186,7 @@ public class Recursion {
     // if(arr[mid] <= arr[end]){
     else {
       // case R1 right
-      if (arr[mid] < target <= arr[end]) {
+      if (arr[mid] < target && target <= arr[end]) {
         return sortedAndRoted(arr, target, mid + 1, end);
 
         // case L2 left + L1
