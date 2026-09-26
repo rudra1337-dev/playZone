@@ -1,6 +1,145 @@
 import java.util.*;
 
-class GraphRel{
+class GraphUtils{
+    List<Integer> bfs(List<List<Integer>> graph, int source){
+        List<Integer> res = new ArrayList<>();
+
+        if(graph.size() <= 0 ) return res;
+
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.offer(source);
+        visited.add(source);
+        res.add(source);
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            
+
+            for(int neighbor : graph.get(curr)){
+                if(!visited.contains(neighbor)){
+                    visited.add(neighbor);
+                    queue.offer(neighbor);
+                    res.add(neighbor);
+                    System.out.println(neighbor+",");
+                }
+            }
+
+            System.out.println();
+        }
+
+        return res;
+    }
+
+    private List<Integer> parentToPath(int[] parent, int source){
+        List<Integer> path = new ArrayList<>();
+        
+        while(source != -1){
+            path.add(source);
+            source = parent[source];
+        }
+
+        Collections.reverse(path);
+        return path;
+    }
+
+
+    List<Integer> minPath(List<List<Integer>> graph, int source, int target){
+        if(graph.size() <= 0 ) return nuull;
+
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        visited.add(source);
+        queue.offer(source);
+        int[] parent = new int[graph.size()];
+        parent[source] = -1;
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+
+            for(int neighbor : graph.get(curr)){
+                if(!visited.contains(neighbor)){
+                    parent[neighbor] = curr;
+                    if(neighbor == target) return parentToPath(parent, target);
+                    visited.add(neighbor);
+                    queue.offeer(neighbor);
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    int distance(List<List<Integer>> graph, int source, int target){
+        if(graph.size() <= 0 ) return -1;
+
+        Set<Integer> visited = new HashSet<>();
+        int[] dist = new int[graph.size()];
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.offer(source);
+        dist[source] = 0;
+        visited.add(source);
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+
+            for(int neighbor : graph.get(curr)){
+
+                if(!visited.contains(neighbor)){
+                    dist[neighbor] = dist[curr]+1;
+                    if(neighbor == target) return dist[curr]+1;
+                    visited.add(neighbor);
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        return -1;
+    }
+
+
+    List<Integer> bfsgrid(int[][] grid, int sr, int sc){
+        List<Integer> res = new ArrayList<>();
+
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{sr, sc});
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        Arrays.fill(visited, false);
+        visited[sr][sc] = true;
+        res.add(grid[sr][sc]);
+
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+
+        while(!queue.isEmpty()){
+            int[] curr = queue.poll();
+
+            int cr = curr[0];
+            int cc = curr[1];
+
+            for(int d=0; d<4; d++){
+                // if((d == 0 && cr == 0) || (d == grid.length-1 && cr == 1) ||
+                // (d == 2 && cc == 0) || (d == 3 && cc == grid[0].length)) continue;
+
+                int nr = cr + dr[d];
+                int nc = cc + dc[d];
+
+                if(nr < 0 || nr >= grid.length || nc < 0 || nc >= grid[0].length) continue;
+
+                if(!visited[nr][nc]){
+                    visited[nr][nc] = true;
+                    res.add(grid[nr][nc]);
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+        }
+
+        return res;
+    }
+}
+
+class GraphRel extends GraphUtils{
     List<List<Integer>> graph;
 
     GraphRel(int vertices){
