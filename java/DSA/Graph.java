@@ -137,6 +137,134 @@ class GraphUtils{
 
         return res;
     }
+
+
+
+
+
+
+
+
+    //DFS
+
+    void dfsRec(<List<Integer>> graph, int source, List<Integer> res, boolean[] visited){
+        if(visited[source]) return;
+        visited[source] = true;
+        res.add(source);
+        
+        for(int neighbor : graph.get(source)){
+            if(!visited[neighbor]){
+                visited[neighbor] = true;
+                dfsRec(graph, neighbor, res, visited);
+            }
+        }
+
+    }
+
+    //TC = O(v+e)
+    //SC = O(v)
+
+
+    List<Integer> dfsIte(List<List<Integer>> graph, int source){
+        if(graph.size() <= 0) return new ArrayList<>();
+
+        List<Integer> res = new ArrayList<>();
+        Queue<Integer> stack = new ArrayDeque<>();
+        boolean[] visited = new boolean[graph.size()];
+
+        stack.push(source);
+        visited[source] = true;
+
+        while(!stack.isEmpty()){
+            int curr = stack.pop();
+            res.add(curr);
+
+            for(int neighbor : graph.get(curr)){
+                if(!visited[neighbor]){
+                    visited[neighbor] = true;
+                    stack.push(neighbor);
+                }
+            }
+        }
+
+        return res;
+    }
+    //Tc = O(v+e)
+    //SC = O(v)
+
+
+    // DFS on disconnected graph
+    
+    List<List<Integer>> dfsDisconnected(List<List<Integer>> graph){
+        if(graph.size() <= 0 ) return new ArrayList<>();
+
+        boolean[] visited = new boolean[graph.size()];
+        List<List<Integer>> res = new ArrayList<>();
+
+        for(int i=0; i<graph.size(); i++){
+            if(!visited[i]){
+                List<Integer> list = new ArrayList<>();
+                dfsRec(graph, i, list, visited);
+                res.add(list);
+            }
+        }
+
+        return res;
+    }
+
+    //TC = O(v+e)
+    //SC = O(v)
+
+// Count connected components
+
+    int dfsConnectedCount(List<List<Integer>> graph){
+        if(graph.size() <= 0 ) return 0;
+
+        boolean[] visited = new boolean[graph.size()];
+        int count = 0;
+
+        for(int i=0; i<graph.size(); i++){
+            if(!visited[i]){
+                count++;
+                dfsRec(graph, i, new ArrayList<>(), visited);
+            }
+        }
+
+        return count;
+    }
+
+
+    //DFS on grid
+
+    void dfsGrid(int[][] grid, int r, int c, boolean[][] visited, List<Integer> res){
+        int row = grid.length, col = grid[0].length;
+
+        if(r < 0 || r >= row || c < 0 || c >= col) return;
+        if(visited[r][c]) return;
+
+        visited[r][c] = true;
+        res.add(grid[r][c]);
+
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+
+        for(int d = 0; d < 4; d++){
+
+            int nr = r + dr[d];
+            int nc = c + dc[d];
+            
+            if(nr < 0 || nr >= row || nc < 0 || nc >= col) continue;
+
+            if(!visited[nr][nc]){
+                visited[nr][nc] = true;
+                dfsGrid(grid, nr, nc, visited, res);
+            }
+        }
+    }
+
+    // TC = O(v+e)
+    // SC = O(v)
+
 }
 
 class GraphRel extends GraphUtils{
