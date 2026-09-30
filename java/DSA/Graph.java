@@ -215,7 +215,7 @@ class GraphUtils{
     //TC = O(v+e)
     //SC = O(v)
 
-// Count connected components
+    // Count connected components
 
     int dfsConnectedCount(List<List<Integer>> graph){
         if(graph.size() <= 0 ) return 0;
@@ -265,7 +265,173 @@ class GraphUtils{
     // TC = O(v+e)
     // SC = O(v)
 
+
+    // Cycledection
+
+    // Undirected graph
+
+    private boolean hasCycleDfs(List<List<Integer> graph, int source, int parent, boolean visited){
+        visited[source] = true;
+
+        for(int neighbor : graph.get(source)){
+
+            if(!visited[neighbor]){
+                if(hasCycleDfs(graph, neighbor, source, visited))  return true;
+            }else if(neighbor != parent) return true;
+        }
+
+        return false;
+    }
+    //TC = O(v+e)
+    //SC = (v)
+
+    boolean hasCycleUndirectedDFS(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return false;
+
+        boolean[] visited = new boolean[n];
+
+
+        for(int v=0; v<n; v++){
+            if(!visited[v]) if(hasCycleDfs(graph, v, -1, visited)) return true;
+        }
+
+        return false;
+    }
+
+    //TC = O(v+e)
+    //SC = (v)
+
+
+    private class Node{
+        int p, v;
+        Node(int v, int p){
+            this.v = v;
+            this.p = p;
+        }
+    }
+
+    boolean hasCycleUndirectedBFS(List<List<Integer> graph){
+        int n = graph.size();
+        if(n <= 0) return false;
+
+        int[] visited = new int[n];
+        Queue<Node> queue = new ArrayDeque<>();
+
+
+
+        for(int i=0; i<n; i++){
+            if(visited[i]) continue;
+            queue.offer(new Node(i, -1));
+            visited[i] = true;
+
+            while(!queue.isEmpty()){
+                Node curr = queue.poll();
+                int v = curr.v;
+                int parent = curr.p;
+
+                for(int neighbor : graph.get(v)){
+                    if(!visited[neighbor]){
+                        visited[neighbor] = true;
+                        queue.offer(new Node(neighbor, v));
+                    }else if(neighbor != parent) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    //TC = O(v+e)
+    //SC = O(v)
+
+
+
+    // Directed graph
+
+    // state[x] = 0 → not visited
+    // state[x] = 1 → currently visiting
+    // state[x] = 2 → completely processed
+
+    private boolean hasCycleDirected(List<List<Integer>> graph, int source, int[] state){
+        state[source] = 1;
+
+        for(int neighbor : graph.get(source)){
+            if(state[neighbor] == 0){
+                if(hasCycleDirected(graph, neighbor, state)) return true;
+            }else if(state[neighbor] == 1) return true;
+        }
+
+        state[source] = 2;
+        return false;
+    }
+
+    // TC = O(v+e)
+    // SC = O(v)
+
+
+
+    boolean hasCycleDirectedDFS(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return false;
+
+        int[] state = new int[n];
+
+        for(int v=0; v<n; v++){
+            if(state[v] == 0) if(hasCycleDirected(graph, v, state)) return true;
+        }
+
+        return false;
+    }
+
+    // TC =O(v+e)
+    // SC = O(v)
+
+
+    boolean hasCycleKahn(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return false;
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        int count = 0;
+        int[] indegree = new int[n];
+
+
+        //Degree calculation
+        for(int i=0; i<n; i++){
+            for(int neighbor : graph.get(i)){
+                indegree[neighbor]++;
+            }
+        }
+
+        // adding all the 0th degree elements to queue
+        for(int i=0; i<n; i++){
+            if(indegree[i] == 0) queue.offer(i);
+        }
+
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            count++;
+
+            for(int neighbor : graph.get(curr)){
+                indegree[neighbor]--;
+
+                if(indegree[neighbor] == 0) queue.offer(neighbor);
+            }
+        }
+
+        return count != n;
+    }
+
+    // TC = O(v+e)
+    // SC = O(v)
+
+    
 }
+
+
+
 
 class GraphRel extends GraphUtils{
     List<List<Integer>> graph;
