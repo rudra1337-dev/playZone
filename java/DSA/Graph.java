@@ -426,8 +426,129 @@ class GraphUtils{
 
     // TC = O(v+e)
     // SC = O(v)
-
     
+
+    // Bipartite Graph
+    // 1. BFS Bipartite Check ⭐⭐⭐
+
+    boolean bipartiteBFS(List<List<Integer>> graph, int[] color, int source){
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.offer(source);
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+
+            for(int neighbor : graph.get(curr)){
+                if(color[neighbor] == -1){
+                    color[neighbor] = 1 - color[curr];
+                    queue.offer(neighbor);
+                }else if(color[neighbor] == color[curr]) return false;
+            }
+        }
+
+        return true;
+    }
+
+    // TC = O(v+e)
+    // SC = O(v)
+
+    boolean isBipartiteBFS(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return true;
+
+        int[] color = new int[n];
+        Arrays.fill(color, -1);
+
+        for(int i=0; i<n; i++){
+            if(color[i] == -1){
+                color[i] = 0;
+                if(!bipartiteBFS(graph, color, i)) return false;
+            }
+        }
+
+        return true;
+    }
+
+    // TC = O(v+e)
+    // SC = O(v)
+
+
+
+    // 2. DFS Bipartite Check ⭐⭐⭐
+
+    boolean bipartiteDFS(List<List<Integer>> graph, int color[], int source){
+
+        for(int neighbor : graph.get(source)){
+            if(color[neighbor] == -1){
+                color[neighbor] = 1 - color[source];
+                if(!bipartiteDFS(graph, color, neighbor)) return false;
+            }else if(color[neighbor] == color[source]) return false;
+        }
+
+        return true;
+    }
+
+    //TC = O(v+e)
+    //SC = O(v)
+
+    boolean isBipartiteDFS(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return true;
+
+        int[] color = new int[n];
+        Arrays.fill(color, -1);
+
+        for(int i=0; i<n; i++){
+            if(color[i] == -1){
+                color[i] = 0;
+                if(!bipartiteDFS(graph, color, i)) return false;
+            }
+        }
+
+        return true;
+    }
+
+    //TC = O(v+e)
+    //SC = O(v)
+
+
+    // 3. DFS Bipartite-Directed Check ⭐⭐⭐
+
+    boolean isBipartiteDirectedBFS(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return true;
+
+        //Create undirected graph
+
+        List<List<Integer>> graphA = new ArrayList();
+
+        for(int i=0; i<n; i++) graphA.add(new ArrayList<>());
+
+        for(int from=0; from<n; from++){
+            for(int to : graph.get(from)){
+                graphA.get(from).add(to);
+                graphA.get(to).add(from);
+            }
+        }
+
+
+        int color[] = new int[n];
+        Arrays.fill(color, -1);
+
+        for(int i=0; i<n; i++){
+            if(color[i] == -1){
+                color[i] = 0;
+                if(!bipartiteBFS(graphA, color, i)) return false;
+            }
+        }
+
+        return true;
+    }
+
+    //TC = O(v+e)
+    //SC = O(2e+v)
+
+
 }
 
 
