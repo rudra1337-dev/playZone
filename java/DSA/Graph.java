@@ -549,6 +549,132 @@ class GraphUtils{
     //SC = O(2e+v)
 
 
+
+    //  Topological Sort
+
+    // 1. Kahn's Algorithm — Topological Ordering ⭐⭐⭐
+
+    List<Integer> topologicalSortKahn(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return new ArrayList<>();
+
+        //Find indegree
+        int[] indegree = new int[n];
+        for(int i=0; i<n; i++){
+            for(int neighbor : graph.get(i)){
+                indegree[neighbor]++;
+            }
+        }
+
+        // Add the elements whose indegree are 0
+        Queue<Integer> queue = new ArrayDeque<>();
+
+        for(int i=0; i<n; i++) if(indegree[i] == 0) queue.offer(i);
+
+        List<Integer> res = new ArrayList<>();
+        int count = 0;
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            res.add(curr);
+            count++;
+
+            for(int neighbor : graph.get(curr)){
+                indegree[neighbor]--;
+                if(indegree[neighbor] == 0){
+                     queue.offer(neighbor);
+                }
+            }
+        }
+
+        if(count != n) return new ArrayList<>();
+
+        return res;
+    }
+
+    // TC = O(v+e)
+    // SC = O(v)
+
+
+    // 2. Kahn's Algorithm — Cycle Detection ⭐⭐⭐
+
+    boolean hasCycleKahn(List<List<Integer> graph){
+        int n = graph.size();
+        if(n <= 0) return false;
+
+        // Calculate indegree
+        int[] indegree = new int[n];
+
+        for(int i=0; i<n; i++){
+            for(int neighbor : graph.get(i)){
+                indegree[neighbor]++;
+            }
+        }
+
+        //Add all indegree 0 elements to queue
+        Queue<Integer> queue = new ArrayDeque<>();
+
+        for(int i=0; i<n; i++) if(indegree[i] == 0) queue.offer(i);
+
+        int count = 0;
+
+
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            count++;
+
+            for(int neighbor : graph.get(curr)){
+                indegree[neighbor]--;
+                if(indegree[neighbor] == 0) queue.offer(neighbor);
+            }
+        }
+
+        return count != n;
+    }
+
+    //TC = O(v+e)
+    //SC = O(v)
+
+
+    // 3. DFS Topological Sort ⭐⭐⭐
+
+    boolean hasCycleTopologicalDFS(List<List<Integer>> graph, int[] state, int curr, Deque<Integer> stack){
+        
+
+        for(int neighbor : graph.get(curr)){
+            if(state[neighbor] == 0){
+                state[neighbor] = 1;
+                if(hasCycleTopologicalDFS(graph, state, neighbor, stack)) return true;
+            }else if(state[neighbor] == 1) return true;
+        }
+
+        stack.push(curr);
+        state[curr] = 2;
+        return false;
+    }
+
+
+    List<Integer> topologicalSortDFS(List<List<Integer>> graph){
+        int n = graph.size();
+        if(n <= 0) return new ArrayList<>();
+
+        int[] state = new int[n];
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for(int i=0; i<n; i++){
+            if(state[i] == 0){
+                state[i] = 1;
+                if(hasCycleTopologicalDFS(graph, state, i, stack)) return new ArrayList<>();
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        while(!stack.isEmpty()) res.add(stack.pop());
+
+
+        return res;
+    }
+
 }
 
 
